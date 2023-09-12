@@ -16,6 +16,7 @@
     <br />
 
     <div class="container">
+        <h1>Random L.O.T.R. Quote</h1>
         <!-- Quote -->
         <div class="alert alert-secondary" role="alert">
             <h4 class="alert-heading">"{{ quote }}"</h4>
@@ -23,10 +24,11 @@
             - {{ character }} in <u>{{ movie }}</u>
         </div>
 
+        <h1>Random L.O.T.R. Characters</h1>
         <!-- Characters -->
         <div class="row mx-auto">
             {% for character in characters %}
-                <div class="col-sm-4 mb-4">
+                <div class="col-md-4 mb-4">
                     <div class="card" style="max-width: 30rem;">
                         <div class="card-body">
                             <h5 class="card-title">{{ character['name'] }}</h5>
