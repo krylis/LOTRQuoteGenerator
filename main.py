@@ -1,16 +1,18 @@
-from flask import Flask, redirect, render_template
+from flask import Flask, render_template
 import requests as r
 import random
+import pprint
 
 API_KEY = "Bearer wKkYeJvglLvyiW2YeOc4"
-API_URL = "https://the-one-api.dev/v2/character"
+API_URL = "https://the-one-api.dev/v2"
 
 app = Flask(__name__)
 
 
-# returns data concerning 9 random character from lord of the rings
-def get_ten_random_characters():
-    response = r.get(API_URL, headers={"Authorization": API_KEY})
+# returns data concerning 9 random characters from lord of the rings
+def get_random_characters():
+    response = r.get(API_URL + "/character",
+                     headers={"Authorization": API_KEY})
     response.raise_for_status()
     data = response.json()['docs']
     random_characters = []
@@ -20,10 +22,42 @@ def get_ten_random_characters():
     return random_characters
 
 
+# returns a random quote from the Lord of the Rings movies
+def get_random_quote():
+    response = r.get(API_URL + "/quote",
+                     headers={"Authorization": API_KEY})
+    response.raise_for_status()
+    data = response.json()['docs']
+    random_quote = random.choice(data)
+    return random_quote
+
+
+def get_quote_character(character_id):
+    response = r.get(API_URL + "/character/" + character_id,
+                     headers={"Authorization": API_KEY})
+    response.raise_for_status()
+    data = response.json()['docs']
+    return data['name']
+
+
+def get_quote_movie(movie_id):
+    response = r.get(API_URL + "/movie/" + movie_id,
+                     headers={"Authorization": API_KEY})
+    response.raise_for_status()
+    data = response.json()['docs']
+    return data['name']
+
+
 @app.route('/')
 def home():
-    random_characters = get_ten_random_characters()
-    return render_template("index.html", characters=random_characters)
+    random_characters = get_random_characters()
+    pprint.pprint(random_characters)
+    random_quote = get_random_quote()
+    quote_character = get_quote_character(random_quote['character'])
+    quote_movie = get_quote_movie(random_quote['movie'])
+    return render_template("index.html", characters=random_characters,
+                           quote=random_quote, character=quote_character,
+                           movie=quote_movie)
 
 
 if __name__ == "__main__":
