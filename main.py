@@ -29,36 +29,42 @@ def get_random_quote():
     response.raise_for_status()
     data = response.json()['docs']
     random_quote = random.choice(data)
-    return random_quote
+    quote_id = random_quote['id']
+
+    response = r.get(API_URL + "/quote/" + quote_id,
+                     headers={"Authorization": API_KEY})
+    response.raise_for_status()
+    quote = response.json()['docs'][0]
+    return quote
 
 
 def get_quote_character(character_id):
     response = r.get(API_URL + "/character/" + character_id,
                      headers={"Authorization": API_KEY})
     response.raise_for_status()
-    data = response.json()['docs']
-    return data['name']
+    character = response.json()['docs'][0]
+    return character['name']
 
 
 def get_quote_movie(movie_id):
     response = r.get(API_URL + "/movie/" + movie_id,
                      headers={"Authorization": API_KEY})
     response.raise_for_status()
-    data = response.json()['docs']
-    return data['name']
+    movie = response.json()['docs'][0]
+    return movie['name']
 
 
 @app.route('/')
 def home():
     random_characters = get_random_characters()
-    pprint.pprint(random_characters)
     random_quote = get_random_quote()
+    quote = random_quote['dialog']
     quote_character = get_quote_character(random_quote['character'])
     quote_movie = get_quote_movie(random_quote['movie'])
     return render_template("index.html", characters=random_characters,
-                           quote=random_quote, character=quote_character,
+                           quote=quote, character=quote_character,
                            movie=quote_movie)
 
 
 if __name__ == "__main__":
-    app.run()
+    app.run(debug=True)

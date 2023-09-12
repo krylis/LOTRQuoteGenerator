@@ -1,10 +1,75 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Lord of the Rings - Randomness</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
+  </head>
+  <body style="background-color:black;">
+    <!-- Content -->
 
-</body>
+    <!-- Banner -->
+    <div class="container-fluid text-center">
+        <img src="{{ url_for('static', filename='images/banner.jpg')}}" class="img-fluid" style="width:100%;"/>
+    </div>
+    <br />
+
+    <div class="container">
+        <!-- Quote -->
+        <div class="alert alert-secondary" role="alert">
+            <h4 class="alert-heading">"{{ quote }}"</h4>
+            <hr>
+            - {{ character }} in <u>{{ movie }}</u>
+        </div>
+
+        <!-- Characters -->
+        <div class="row mx-auto">
+            {% for character in characters %}
+                <div class="col-sm-4 mb-4">
+                    <div class="card" style="max-width: 30rem;">
+                        <div class="card-body">
+                            <h5 class="card-title">{{ character['name'] }}</h5>
+                            <p class="card-text">
+                                {% if character['height'] %}
+                                    Height: {{ character['height'] }} <br />
+                                {% endif %}
+                                {% if character['race'] %}
+                                    Race: {{ character['race'] }} <br />
+                                {% endif %}
+                                {% if character['gender'] %}
+                                    Gender: {{ character['gender'] }} <br />
+                                {% endif %}
+                                {% if character['birth'] %}
+                                    Birth: {{ character['birth'] }} <br />
+                                {% endif %}
+                                {% if character['death'] %}
+                                    Death: {{ character['death'] }} <br />
+                                {% endif %}
+                                {% if character['spouse'] %}
+                                    Spouse: {{ character['spouse'] }} <br />
+                                {% endif %}
+                                {% if character['hair'] %}
+                                    Hair: {{ character['hair'] }} <br />
+                                {% endif %}
+                                {% if character['realm'] %}
+                                    Realm: {{ character['realm'] }} <br />
+                                {% endif %}
+                            </p>
+                            <div class="text-center">
+                                <a href="{{ character['wikiUrl'] }}" target="_blank" class="btn btn-primary">Go to wiki</a>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+
+
+    </div>
+
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm" crossorigin="anonymous"></script>
+  </body>
 </html>
